@@ -1,4 +1,4 @@
-package SimLapin;
+package SimRabbit;
 
 enum Sex {
     MALE,
