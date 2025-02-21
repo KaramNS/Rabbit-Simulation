@@ -1,11 +1,13 @@
 package SimRabbit;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Rabbit 
 {
     private int age ;
     private final Sex sex ;
+    private ArrayList;
 
     public Rabbit()
     {
