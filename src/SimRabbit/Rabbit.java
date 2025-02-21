@@ -15,5 +15,6 @@ public class Rabbit
 
         this.sex =  rn.nextInt(2) == 0 ? Sex.MALE : Sex.FEMALE ;
     }
-    
+
+    public 
 }
