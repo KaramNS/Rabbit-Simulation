@@ -1,11 +1,10 @@
-package SimLapin;
+package SimRabbit;
 
+import java.util.ArrayList;
 
 class Litter{
 
-    private final Arraylist<Rabbit> litter;
-
-
-    /*---------------------------*/
-
+    Rabbit mama;
+    Rabbit papa;
+    
 }
