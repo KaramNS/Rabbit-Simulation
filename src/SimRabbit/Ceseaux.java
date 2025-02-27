@@ -41,7 +41,7 @@ public class Ceseaux{
      * @description Get numbers months passed
      * @return   return number of months passed
      */
-    public getNumberMonth(){
+    public double getNumberMonth(){
         return this.numberMonth;
     }
 
@@ -50,7 +50,7 @@ public class Ceseaux{
      * @description get how many rabbits died since the start of the simulation
      * @return   return the number of rabbits dead
      */
-    public getNumberDead(){
+    public double getNumberDead(){
         return this.numberDead;
     }
 
@@ -59,7 +59,7 @@ public class Ceseaux{
      * @description get how many rabbits were born since the start of the simulation
      * @return   return the number of rabbits born
      */
-    public getNumberBirth(){
+    public double getNumberBirth(){
         return this.numberBirth;
     }
 
@@ -74,5 +74,11 @@ public class Ceseaux{
 
     /*-------------------------------- Methods ------------------------------------ */
 
-    
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return String.format("Number of month passed: %d Number of rabbits alive: %d \n Number of birth since simulation started : %d \n Number of rabbits dead: %d \n", this.numberMonth,this.numberAlive,this.numberBirth,this.numberDead);
+    }
+
 }
