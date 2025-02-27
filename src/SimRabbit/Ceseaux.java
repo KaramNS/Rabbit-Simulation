@@ -77,7 +77,6 @@ public class Ceseaux{
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return String.format("Number of month passed: %d Number of rabbits alive: %d \n Number of birth since simulation started : %d \n Number of rabbits dead: %d \n", this.numberMonth,this.numberAlive,this.numberBirth,this.numberDead);
     }
 
