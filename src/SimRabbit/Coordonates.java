@@ -1,5 +1,7 @@
 package SimRabbit;
 
+import java.util.Objects;
+
 public class Coordonates {
     private final int x_axes;
     private final int y_axes;
@@ -17,8 +19,14 @@ public class Coordonates {
         this.x_axes = inXAxes;
         this.y_axes = inYAxes;
     }
-    
+
     public String toString(){
         return String.format("({}, {})", this.x(), this.y());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Integer.parseInt( String.format("{}{}", this.x(), this.y()) );
     }
 }
