@@ -2,7 +2,7 @@ package SimRabbit;
 
 public class Time {
 
-    private int time ;
+    private int time ; // months passed
 
     public Time()
     {
