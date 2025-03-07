@@ -1,16 +1,17 @@
 package SimRabbit;
 
-import java.util.Objects;
-
 public class Coordonates {
     private final int x_axes;
     private final int y_axes;
 
     // getters 
-    public int x() {
+    public int x() 
+    {
         return this.x_axes;
-        }
-    public int y(){
+    }
+
+    public int y()
+    {
         return this.y_axes;
     }
 
