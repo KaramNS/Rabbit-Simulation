@@ -1,8 +1,11 @@
 package SimRabbit;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Cezeaux{
+
+
 
     // Statistics
 
@@ -14,8 +17,11 @@ public class Cezeaux{
     private final Time time ;
 
     // Space 
-    private ArrayList<Rabbit> rabbits;
+    private ArrayList<Rabbit> MaleRabbits;
     private ArrayList<Rabbit> FemaleRabbits ;
+
+    // Random generator
+    private final Random random ;
 
     /*-------------------------------- Constructor ---------------------------------- */
 
@@ -30,10 +36,17 @@ public class Cezeaux{
 
         this.time = new Time() ;
 
-        this.rabbits = new ArrayList<Rabbit>();
-
-        this.numberAlive = rabbits.size();
+        this.MaleRabbits = new ArrayList<Rabbit>();
         this.FemaleRabbits = new ArrayList<Rabbit>();
+
+        this.numberAlive = MaleRabbits.size() + FemaleRabbits.size();
+        this.random = new Random();
+
+        for (int i = 0 ; i < 10 ; i++)
+        {
+            Rabbit newRabbit = new Rabbit(new Coordonates(0, 0), this.time.time(), this.random);
+            this.MaleRabbits.add(newRabbit);
+        }
     }
   
     /**
@@ -43,20 +56,35 @@ public class Cezeaux{
      */
     public Cezeaux(ArrayList<Rabbit> listOfRabbits)
     {
+        this.random = new Random();
 
-        this.rabbits = listOfRabbits;
+        this.MaleRabbits = new ArrayList<Rabbit>();
+        this.FemaleRabbits = new ArrayList<Rabbit>();
+
+        for (int i = 0 ; i < listOfRabbits.size() ; i++)
+        {
+            if(listOfRabbits.get(i).sex() == Sex.MALE)
+            {
+                this.MaleRabbits.add(listOfRabbits.get(i));
+            }
+            else
+            {
+                this.FemaleRabbits.add(listOfRabbits.get(i));
+            }
+        }
 
         this.numberBirth = 0;
         this.numberDead = 0;
+
         this.time = new Time() ;
-        this.numberAlive = rabbits.size();
+        this.numberAlive = FemaleRabbits.size() + MaleRabbits.size();
     }
 
     /*-------------------------------- Getter/Setter ---------------------------------- */
 
     /**
      * @description Get numbers months passed
-     * @return   return number of months passed
+     * @return      return number of months passed
      */
     public int getNumberMonth()
     {
@@ -94,35 +122,78 @@ public class Cezeaux{
 
     @Override
     public String toString() 
-    {
-        return String.format("Number of month passed: %lf Number of rabbits alive: %lf \n Number of birth since simulation started : %lf \n Number of rabbits dead: %lf\n", 
-        this.time.time(),this.numberAlive,this.numberBirth,this.numberDead);
+    {   
+        StringBuilder str = new StringBuilder();
+
+        str.append("Number of months passed: " + this.time.time() + "\n");
+        str.append("Number of rabbits alive: " + this.numberAlive + "\n");
+        str.append("Number of birth since simulation started : " + this.numberBirth + "\n");
+        str.append("Number of rabbits dead: " + this.numberDead + "\n");
+
+        return str.toString();
     }
 
     /**
-     * @description move the Cezeau world forward (1 month)
+     * @description move the Cezeau world forward in time (1 month)
      */
     public void update()
     {
         this.time.step() ;
 
         // generer de nouveaux lapins et les stocker dans le tableau
-        
-        // pour chaque lapin faire update()
-        for (int i = 0 ; i < this.rabbits.size() ; i++)
-        {   
-            if(this.rabbits.get(i).age() == -1)
+        for (int i = 0 ; i < this.FemaleRabbits.size() ; i++)
+        {
+            if(this.FemaleRabbits.get(i).mature() == true)
             {
-                this.rabbits.remove(i);
+                int rabbitIndex = this.FemaleRabbits.get(i).lookForPartener(this.MaleRabbits);
+
+                if(rabbitIndex != -1)
+                {   
+                    Rabbit newRabbit = new Rabbit(this.FemaleRabbits.get(i).actualCoordonates(),  this.time.time(), this.random);
+                    
+                    if(newRabbit.sex() == Sex.FEMALE)
+                    {
+                        this.FemaleRabbits.add(newRabbit);
+                    }
+                    else
+                    {
+                        this.MaleRabbits.add(newRabbit);
+                    }
+
+                    this.numberBirth ++ ;
+                }
+            }
+        }
+
+        // pour chaque lapin faire update()
+
+        for (int i = 0 ; i < this.MaleRabbits.size() ; i++)
+        {   
+            if(this.MaleRabbits.get(i).age() == -1)
+            {
+                this.MaleRabbits.remove(i);
                 this.numberDead ++ ;
             }
             else 
             {
-                this.rabbits.get(i).update();
+                this.MaleRabbits.get(i).update();
             }
         }
 
-        this.numberAlive = rabbits.size();
+        for (int i = 0 ; i < this.FemaleRabbits.size() ; i++)
+        {   
+            if(this.FemaleRabbits.get(i).age() == -1)
+            {
+                this.FemaleRabbits.remove(i);
+                this.numberDead ++ ;
+            }
+            else 
+            {
+                this.FemaleRabbits.get(i).update();
+            }
+        }
+
+        this.numberAlive = FemaleRabbits.size();
     }
 
     /**

@@ -28,6 +28,8 @@ public class Coordonates {
     @Override
     public int hashCode()
     {
+        
         return Integer.parseInt( String.format("{}{}", this.x(), this.y()) );
+
     }
 }

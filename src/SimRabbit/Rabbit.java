@@ -1,5 +1,6 @@
 package SimRabbit;
 
+import java.util.ArrayList;
 import java.util.Random; 
 
 enum Sex {
@@ -23,6 +24,10 @@ public class Rabbit
     private final Random random ;
 
     private boolean mature ;
+
+    private Coordonates actualCoordonates ;
+
+    // --------------------------- Constructor ---------------------------
 
     public Rabbit(Coordonates inCoordonatesOfBirth, int inInstantOfBirth, Random random )
     {
@@ -56,6 +61,11 @@ public class Rabbit
     
     // --------------------------- Getters ---------------------------
 
+    public Coordonates actualCoordonates()
+    {
+        return this.actualCoordonates ;
+    }
+    
     public int morbidity ()
     {
         return this.morbidity ;
@@ -140,6 +150,24 @@ public class Rabbit
         {
             this.kill();
         }
+    }
+
+    /**
+     * @description look for a partener in a list of rabbits
+     * @param ArrayList<Rabbit> rabbits, the rabbit list to look for a partener in 
+     * @return the index of the rabbit or -1 if not found
+     */
+    public int lookForPartener (ArrayList<Rabbit> rabbits)
+    {
+        // Look for a mate
+        for (int i = 0; i < rabbits.size(); i++)
+        {
+            if (rabbits.get(i).mature() && !rabbits.get(i).equals(this) )
+            {
+                return i ;
+            }
+        }
+        return -1 ;
     }
 
 }
