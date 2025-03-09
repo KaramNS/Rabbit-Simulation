@@ -1,6 +1,11 @@
 package SimRabbit;
 
-import java.util.Random;
+import java.util.Random; 
+
+enum Sex {
+    MALE,
+    FEMALE;
+}
 
 public class Rabbit 
 {   
@@ -13,19 +18,27 @@ public class Rabbit
     
     private final int hashID ;
 
-    public Rabbit(Coordonates inCoordonatesOfBirth, int inInstantOfBirth)
+    private int morbidity ;
+
+    private final Random random ;
+
+    private boolean mature ;
+
+    public Rabbit(Coordonates inCoordonatesOfBirth, int inInstantOfBirth, Random random )
     {
         this.age = 0 ;
+        this.mature = false ;
+
         this.InstantOfBirth = inInstantOfBirth ;
         this.coordonatesOfBirth = inCoordonatesOfBirth ;
 
-        Random rn = new Random();
+        this.random = random ;
 
-        this.sex =  rn.nextInt(2) == 0 ? Sex.MALE : Sex.FEMALE ;
+        this.sex =  random.nextInt(2) == 0 ? Sex.MALE : Sex.FEMALE ;
         this.hashID = this.hashCode() ;
     }
 
-    // Hasher
+    // Hasher redifinition
     @Override
     public int hashCode()
     {
@@ -41,7 +54,12 @@ public class Rabbit
         return result ;
     }
     
-    // Getters 
+    // --------------------------- Getters ---------------------------
+
+    public int morbidity ()
+    {
+        return this.morbidity ;
+    }
 
     public int age()
     {
@@ -75,6 +93,32 @@ public class Rabbit
     {
         return this.coordonatesOfBirth;
     }
+    
+    public int hashID()
+    {
+        return this.hashID ;
+    }
+
+    // --------------------------- Behaviar Getters ---------------------------
+
+    public boolean mature () 
+    {   
+        if ( this.age() > 5 && this.age() < 8)
+        {
+            if (random.nextInt(1) % 2 == 0 )
+            {
+                this.mature = true ;
+            }
+        } 
+        else if ( this.age() == 8 )
+        {
+            this.mature = true ;
+        }
+
+        return this.mature ;
+    }
+
+    // --------------------------- Behaviar Methodes ---------------------------
 
     public void kill()
     {
@@ -86,18 +130,16 @@ public class Rabbit
     {
         this.age ++ ;
 
-        // if mature then look for a mate to fuck
+        if (this.mature())
+        {
+            // if mature then look for a mate to 
+        }
 
         // if 15 years old -> die bitch
-
         if (this.age() / 12 >= 15) 
         {
             this.kill();
         }
     }
 
-    public int hashID()
-    {
-        return this.hashID ;
-    }
 }

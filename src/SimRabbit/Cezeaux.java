@@ -11,10 +11,11 @@ public class Cezeaux{
     private double numberBirth;
 
     // Time counter
-    private int numberMonth;
+    private final Time time ;
 
-    // 
+    // Space 
     private ArrayList<Rabbit> rabbits;
+    private ArrayList<Rabbit> FemaleRabbits ;
 
     /*-------------------------------- Constructor ---------------------------------- */
 
@@ -24,12 +25,15 @@ public class Cezeaux{
      */
     public Cezeaux()
     {
-        this.numberBirth = 0;
-        this.numberDead = 0;
-        this.numberMonth = 0;
+        this.numberBirth = 0 ;
+        this.numberDead = 0 ;
+
+        this.time = new Time() ;
+
         this.rabbits = new ArrayList<Rabbit>();
 
         this.numberAlive = rabbits.size();
+        this.FemaleRabbits = new ArrayList<Rabbit>();
     }
   
     /**
@@ -44,7 +48,7 @@ public class Cezeaux{
 
         this.numberBirth = 0;
         this.numberDead = 0;
-        this.numberMonth = 0;
+        this.time = new Time() ;
         this.numberAlive = rabbits.size();
     }
 
@@ -54,9 +58,9 @@ public class Cezeaux{
      * @description Get numbers months passed
      * @return   return number of months passed
      */
-    public double getNumberMonth()
+    public int getNumberMonth()
     {
-        return this.numberMonth;
+        return this.time.time() ;
     }
 
     /**
@@ -91,42 +95,53 @@ public class Cezeaux{
     @Override
     public String toString() 
     {
-        return String.format("Number of month passed: %d Number of rabbits alive: %d \n Number of birth since simulation started : %d \n Number of rabbits dead: %d \n", this.numberMonth,this.numberAlive,this.numberBirth,this.numberDead);
+        return String.format("Number of month passed: %lf Number of rabbits alive: %lf \n Number of birth since simulation started : %lf \n Number of rabbits dead: %lf\n", 
+        this.time.time(),this.numberAlive,this.numberBirth,this.numberDead);
     }
 
     /**
-     * @description move the time forward (1 month)
+     * @description move the Cezeau world forward (1 month)
      */
-    public void moveTimeForward()
+    public void update()
     {
-        this.numberMonth += 1;
+        this.time.step() ;
 
         // generer de nouveaux lapins et les stocker dans le tableau
-
-        // pour chaque nouveau lapin faire this.numberBirth += 1;
         
-        //pour chaque lapin mort faire this.numberDead += 1;
+        // pour chaque lapin faire update()
+        for (int i = 0 ; i < this.rabbits.size() ; i++)
+        {   
+            if(this.rabbits.get(i).age() == -1)
+            {
+                this.rabbits.remove(i);
+                this.numberDead ++ ;
+            }
+            else 
+            {
+                this.rabbits.get(i).update();
+            }
+        }
 
         this.numberAlive = rabbits.size();
     }
 
     /**
-     * @description moveTimeForward move forward the time of a number of months in parameter
+     * @description update move forward the time of a number of months in parameter
      * @param  numberMonths is the number of months you want to move forward
      */
-    public void moveTimeForward(int numberMonths )
+    public void simulate(int numberMonths )
     {
         for(int i = 0; i < numberMonths; i++)
         {
-            moveTimeForward();
+            update();
         }
     }
     
     public static void main (String[] args)
     {
-        Cezeaux cezeaux = new Cezeaux();
-        System.out.println(cezeaux.toString());
-        cezeaux.moveTimeForward(12);
-        System.out.println(cezeaux.toString());
+        Cezeaux world = new Cezeaux();
+        System.out.println(world.toString());
+        world.simulate(12);
+        System.out.println(world.toString());
     }
 }
