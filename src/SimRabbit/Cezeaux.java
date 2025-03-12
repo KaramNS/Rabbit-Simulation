@@ -1,18 +1,27 @@
 package SimRabbit;
 
 import java.util.ArrayList;
-
-
+import java.util.Random;
 
 public class Cezeaux{
+
+
+
+    // Statistics
 
     private double numberAlive;
     private double numberDead;
     private double numberBirth;
-    private int numberMonth;
-    private ArrayList<Rabbit> rabbits;
 
+    // Time counter
+    private final Time time ;
 
+    // Space 
+    private ArrayList<Rabbit> MaleRabbits;
+    private ArrayList<Rabbit> FemaleRabbits ;
+
+    // Random generator
+    private final Random random ;
 
     /*-------------------------------- Constructor ---------------------------------- */
 
@@ -20,66 +29,83 @@ public class Cezeaux{
      * @description default constructor
      * @return   initialize a instance
      */
+    public Cezeaux()
+    {
+        this.numberBirth = 0 ;
+        this.numberDead = 0 ;
 
+        this.time = new Time() ;
 
-    public Cezeaux(){
+        this.MaleRabbits = new ArrayList<Rabbit>();
+        this.FemaleRabbits = new ArrayList<Rabbit>();
 
-        this.numberBirth = 0;
-        this.numberDead = 0;
-        this.numberMonth = 0;
+        this.numberAlive = MaleRabbits.size() + FemaleRabbits.size();
+        this.random = new Random();
 
-        Coordonates tempCoordonates = new Coordonates(0, 0);
-        Rabbit tempRabbit = new Rabbit(tempCoordonates, numberMonth);
-        
-
-        this.rabbits.add(tempRabbit);
-        this.numberAlive = rabbits.size();
-
+        for (int i = 0 ; i < 10 ; i++)
+        {
+            Rabbit newRabbit = new Rabbit(new Coordonates(0, 0), this.time.time(), this.random);
+            this.MaleRabbits.add(newRabbit);
+        }
     }
   
-
     /**
      * @description          The method initialize an instance of Cezeaux from a list of rabbits
      * @param  listOfRabbits is a list of rabbits instances. 
      * @return               return an instance of Ceseaux
      */
-    public Cezeaux(ArrayList<Rabbit> listOfRabbits){
+    public Cezeaux(ArrayList<Rabbit> listOfRabbits)
+    {
+        this.random = new Random();
 
-        this.rabbits = listOfRabbits;
+        this.MaleRabbits = new ArrayList<Rabbit>();
+        this.FemaleRabbits = new ArrayList<Rabbit>();
+
+        for (int i = 0 ; i < listOfRabbits.size() ; i++)
+        {
+            if(listOfRabbits.get(i).sex() == Sex.MALE)
+            {
+                this.MaleRabbits.add(listOfRabbits.get(i));
+            }
+            else
+            {
+                this.FemaleRabbits.add(listOfRabbits.get(i));
+            }
+        }
 
         this.numberBirth = 0;
         this.numberDead = 0;
-        this.numberMonth = 0;
-        this.numberAlive = rabbits.size();
-       
 
+        this.time = new Time() ;
+        this.numberAlive = FemaleRabbits.size() + MaleRabbits.size();
     }
 
     /*-------------------------------- Getter/Setter ---------------------------------- */
 
     /**
      * @description Get numbers months passed
-     * @return   return number of months passed
+     * @return      return number of months passed
      */
-    public double getNumberMonth(){
-        return this.numberMonth;
+    public int getNumberMonth()
+    {
+        return this.time.time() ;
     }
-
 
     /**
      * @description get how many rabbits died since the start of the simulation
      * @return   return the number of rabbits dead
      */
-    public double getNumberDead(){
+    public double getNumberDead()
+    {
         return this.numberDead;
     }
-
 
     /**
      * @description get how many rabbits were born since the start of the simulation
      * @return   return the number of rabbits born
      */
-    public double getNumberBirth(){
+    public double getNumberBirth()
+    {
         return this.numberBirth;
     }
 
@@ -87,42 +113,106 @@ public class Cezeaux{
      * @description get the number of rabbits
      * @return   return the number of rabbits alive
      */
-
-    public double getNumberAlive(){
+    public double getNumberAlive()
+    {
         return this.numberAlive;
     }
 
     /*-------------------------------- Methods ------------------------------------ */
 
-
     @Override
-    public String toString() {
-        return String.format("Number of month passed: %d Number of rabbits alive: %d \n Number of birth since simulation started : %d \n Number of rabbits dead: %d \n", this.numberMonth,this.numberAlive,this.numberBirth,this.numberDead);
+    public String toString() 
+    {   
+        StringBuilder str = new StringBuilder();
+
+        str.append("Number of months passed: " + this.time.time() + "\n");
+        str.append("Number of rabbits alive: " + this.numberAlive + "\n");
+        str.append("Number of birth since simulation started : " + this.numberBirth + "\n");
+        str.append("Number of rabbits dead: " + this.numberDead + "\n");
+
+        return str.toString();
     }
 
     /**
-     * @description move the time forward (1 month)
+     * @description move the Cezeau world forward in time (1 month)
      */
-    public void moveTimeForward(){
-        
-        this.numberMonth += 1;
+    public void update()
+    {
+        this.time.step() ;
 
-        //generer de nouveaux lapins et les stocker dans le tableau
-        // pour chaque nouveau lapin faire this.numberBirth += 1;
-        //pour chaque lapin mort faire this.numberDead += 1;
+        // generer de nouveaux lapins et les stocker dans le tableau
+        for (int i = 0 ; i < this.FemaleRabbits.size() ; i++)
+        {
+            if(this.FemaleRabbits.get(i).mature() == true)
+            {
+                int rabbitIndex = this.FemaleRabbits.get(i).lookForPartener(this.MaleRabbits);
 
-        this.numberAlive = rabbits.size();
+                if(rabbitIndex != -1)
+                {   
+                    Rabbit newRabbit = new Rabbit(this.FemaleRabbits.get(i).actualCoordonates(),  this.time.time(), this.random);
+                    
+                    if(newRabbit.sex() == Sex.FEMALE)
+                    {
+                        this.FemaleRabbits.add(newRabbit);
+                    }
+                    else
+                    {
+                        this.MaleRabbits.add(newRabbit);
+                    }
+
+                    this.numberBirth ++ ;
+                }
+            }
+        }
+
+        // pour chaque lapin faire update()
+
+        for (int i = 0 ; i < this.MaleRabbits.size() ; i++)
+        {   
+            if(this.MaleRabbits.get(i).age() == -1)
+            {
+                this.MaleRabbits.remove(i);
+                this.numberDead ++ ;
+            }
+            else 
+            {
+                this.MaleRabbits.get(i).update();
+            }
+        }
+
+        for (int i = 0 ; i < this.FemaleRabbits.size() ; i++)
+        {   
+            if(this.FemaleRabbits.get(i).age() == -1)
+            {
+                this.FemaleRabbits.remove(i);
+                this.numberDead ++ ;
+            }
+            else 
+            {
+                this.FemaleRabbits.get(i).update();
+            }
+        }
+
+        this.numberAlive = FemaleRabbits.size();
     }
 
     /**
-     * @description moveTimeForward move forward the time of a number of months in parameter
+     * @description update move forward the time of a number of months in parameter
      * @param  numberMonths is the number of months you want to move forward
      */
-    public void moveTimeForward(int numberMonths ){
-
-        for(int i = 0; i < numberMonths; i++){
-            moveTimeForward();
+    public void simulate(int numberMonths )
+    {
+        for(int i = 0; i < numberMonths; i++)
+        {
+            update();
         }
     }
     
+    public static void main (String[] args)
+    {
+        Cezeaux world = new Cezeaux();
+        System.out.println(world.toString());
+        world.simulate(12);
+        System.out.println(world.toString());
+    }
 }
