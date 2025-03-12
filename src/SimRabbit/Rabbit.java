@@ -29,6 +29,15 @@ public class Rabbit
 
     // --------------------------- Constructor ---------------------------
 
+    /**
+     * @description it is the default constructor for Rabbit Object
+     * 
+     * @param inCoordonatesOfBirth is the coordonates where the rabbit spawn
+     * @param inInstantOfBirth is the date of birth (in months)
+     * @param random is an object needed to randomized the simulation
+     * 
+     */
+
     public Rabbit(Coordonates inCoordonatesOfBirth, int inInstantOfBirth, Random random )
     {
         this.age = 0 ;
@@ -42,7 +51,13 @@ public class Rabbit
         this.sex =  random.nextInt(2) == 0 ? Sex.MALE : Sex.FEMALE ;
         this.hashID = this.hashCode() ;
     }
+    
 
+
+    /**
+     * @description redifine hashCode to have an identifier for all rabbits
+     * @return int : the "value" of the identifier of the rabbit
+     */
     // Hasher redifinition
     @Override
     public int hashCode()
@@ -60,7 +75,10 @@ public class Rabbit
     }
     
     // --------------------------- Getters ---------------------------
-
+    /**
+     * @description used to know the rabbit's coordonates
+     * @return Coordonates: is a coordonates  x/y needed to know where the rabbit is on a 2D map
+     */
     public Coordonates actualCoordonates()
     {
         return this.actualCoordonates ;
@@ -88,7 +106,7 @@ public class Rabbit
 
     /**
      * @description Get the instant of birth of the rabbit
-     * @return
+     * @return 
      */
     public int instantOfBirth()
     {
@@ -111,6 +129,11 @@ public class Rabbit
 
     // --------------------------- Behaviar Getters ---------------------------
 
+    /**
+     * @descrition validate if the rabbit is adult
+     * 
+     * @return boolean : true if the rabbit is adult, else return false
+     */
     public boolean mature () 
     {   
         if ( this.age() > 5 && this.age() < 8)
@@ -130,12 +153,23 @@ public class Rabbit
 
     // --------------------------- Behaviar Methodes ---------------------------
 
+    /**
+     * @description kill a rabbit. His age becomes -1 significate it's dead.
+     * @param void
+     * @return void
+     */
     public void kill()
     {
         // Delete the object
         this.age = -1 ;
     } 
-    
+   
+    /**
+     * @description update the age of the rabbit. He get older (+1 month)
+     * @param void
+     * @return void
+     */
+
     public void update()
     {
         this.age ++ ;
