@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class Cezeaux{
 
-
-
     // Statistics
 
     private double numberAlive;
@@ -29,7 +27,7 @@ public class Cezeaux{
      * @description default constructor
      * @return   initialize a instance
      */
-    public Cezeaux()
+    public Cezeaux(Random random)
     {
         this.numberBirth = 0 ;
         this.numberDead = 0 ;
@@ -40,7 +38,8 @@ public class Cezeaux{
         this.FemaleRabbits = new ArrayList<Rabbit>();
 
         this.numberAlive = MaleRabbits.size() + FemaleRabbits.size();
-        this.random = new Random();
+
+        this.random = random ;
 
         for (int i = 0 ; i < 10 ; i++)
         {
@@ -93,7 +92,7 @@ public class Cezeaux{
 
     /**
      * @description get how many rabbits died since the start of the simulation
-     * @return   return the number of rabbits dead
+     * @return      return the number of rabbits dead
      */
     public double getNumberDead()
     {
@@ -102,7 +101,7 @@ public class Cezeaux{
 
     /**
      * @description get how many rabbits were born since the start of the simulation
-     * @return   return the number of rabbits born
+     * @return      return the number of rabbits born
      */
     public double getNumberBirth()
     {
@@ -111,11 +110,29 @@ public class Cezeaux{
 
     /**
      * @description get the number of rabbits
-     * @return   return the number of rabbits alive
+     * @return      return the number of rabbits alive
      */
     public double getNumberAlive()
     {
         return this.numberAlive;
+    }
+
+
+    /**
+     * @description   add a Rabbit object to the Cezeaux world
+     * @param  rabbit is the rabbit to add
+     */
+
+    public void addRabbit (Rabbit rabbit)
+    {
+        if(rabbit.sex() == Sex.MALE)
+        {
+            this.MaleRabbits.add(rabbit);
+        }
+        else
+        {
+            this.FemaleRabbits.add(rabbit);
+        }
     }
 
     /*-------------------------------- Methods ------------------------------------ */
@@ -209,10 +226,19 @@ public class Cezeaux{
     }
     
     public static void main (String[] args)
-    {
-        Cezeaux world = new Cezeaux();
+    {   
+        Random random = new Random();
+
+        Cezeaux world = new Cezeaux(random);
+
+        for (int i = 0 ; i < 10 ; i++)
+        {
+            world.addRabbit(new Rabbit(new Coordonates(0, 0), 0, random));
+        }
+        
         System.out.println(world.toString());
-        world.simulate(12);
+
+        world.simulate(12 * 20);
         System.out.println(world.toString());
     }
 }

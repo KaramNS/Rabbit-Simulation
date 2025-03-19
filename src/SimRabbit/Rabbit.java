@@ -196,7 +196,7 @@ public class Rabbit
         // Look for a mate
         for (int i = 0; i < rabbits.size(); i++)
         {
-            if (rabbits.get(i).mature() && !rabbits.get(i).equals(this) )
+            if ( rabbits.get(i).mature() && !rabbits.get(i).equals(this) )
             {
                 return i ;
             }

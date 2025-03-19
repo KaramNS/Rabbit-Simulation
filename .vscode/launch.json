@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Cezeaux",
+            "request": "launch",
+            "mainClass": "SimRabbit.Cezeaux",
+            "projectName": "Simulation-Lapin_f56e8456"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

@@ -31,22 +31,42 @@ public class Coordonates {
      * 
      */
     public Coordonates(int inXAxes, int inYAxes)
-    {
+    {   
         this.x_axes = inXAxes;
         this.y_axes = inYAxes;
     }
 
     /*----------------------- Overrided Method ------------------------------- */
     @Override
-    public String toString(){
+    public String toString()
+    {
         return String.format("({}, {})", this.x(), this.y());
     }
 
     @Override
-    public int hashCode()
+    public int hashCode() 
     {
-        
-        return Integer.parseInt( String.format("{}{}", this.x(), this.y()) );
+        // A good practice is to use a prime number as a multiplier
+        int prime = 31;
+        int result = 1;
+        result = prime * result + this.x();
+        result = prime * result + this.y();
+        return result;
+    }
 
+    @Override
+    public boolean equals(Object obj) 
+    {
+        if (this == obj) 
+        {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) 
+        {
+            return false;
+        }
+        Coordonates other = (Coordonates) obj;
+
+        return this.x() == other.x() && this.y() == other.y();
     }
 }

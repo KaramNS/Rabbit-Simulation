@@ -4,9 +4,7 @@ public class Time {
 
     private int time ; // months passed
 
-
     /*------ Constructor -------- */
-
 
     /**
      * @description it is the default constructor of Time Object
@@ -15,9 +13,6 @@ public class Time {
     {
         this.time = 0;
     }
-
-
-
 
     /*---------------- Getters ---------- */
     /**
@@ -28,7 +23,6 @@ public class Time {
     {
         return this.time ; 
     }
-
 
     /**
      * @description Increments the time (+1 month) 
