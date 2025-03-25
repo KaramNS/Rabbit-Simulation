@@ -3,8 +3,8 @@ package SimRabbit;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Cezeaux{
-
+public class Cezeaux
+{
     // Statistics
 
     private double numberAlive;
@@ -12,13 +12,18 @@ public class Cezeaux{
     private double numberBirth;
 
     // Time counter
+
     private final Time time ;
 
     // Space 
-    private ArrayList<Rabbit> MaleRabbits;
+
+    private ArrayList<Rabbit> MaleRabbits; // TODO : Change to linked list for a better efficiency 
     private ArrayList<Rabbit> FemaleRabbits ;
 
+    private int foodCount ; 
+
     // Random generator
+
     private final Random random ;
 
     /*-------------------------------- Constructor ---------------------------------- */
@@ -36,6 +41,8 @@ public class Cezeaux{
 
         this.MaleRabbits = new ArrayList<Rabbit>();
         this.FemaleRabbits = new ArrayList<Rabbit>();
+
+        this.foodCount = 0 ;
 
         this.numberAlive = MaleRabbits.size() + FemaleRabbits.size();
 
@@ -59,6 +66,8 @@ public class Cezeaux{
 
         this.MaleRabbits = new ArrayList<Rabbit>();
         this.FemaleRabbits = new ArrayList<Rabbit>();
+
+        this.foodCount = 0 ;
 
         for (int i = 0 ; i < listOfRabbits.size() ; i++)
         {
@@ -115,6 +124,16 @@ public class Cezeaux{
     public double getNumberAlive()
     {
         return this.numberAlive;
+    }
+
+
+    /**
+     * @description Get the food count
+     * @return      return food count
+     */
+    public int foodCount ()
+    {
+        return this.foodCount ;
     }
 
 
@@ -210,14 +229,31 @@ public class Cezeaux{
             }
         }
 
-        this.numberAlive = FemaleRabbits.size();
+        if (this.foodCount() < (this.FemaleRabbits.size() + this.MaleRabbits.size()))
+        {
+            // Determine how many rabbits to kill
+
+        } 
+        else 
+        {
+            // Remove the food 
+            this.foodCount -= this.FemaleRabbits.size() + this.MaleRabbits.size() ;
+        }
+
+        // Randomly chose rabbits to kill because of famine
+        // TODO 
+
+        // update the statistics about alive rabbits
+        this.numberAlive = this.FemaleRabbits.size() + this.MaleRabbits.size() ;
+
+        // readd some food for the next iteration 
     }
 
     /**
      * @description update move forward the time of a number of months in parameter
      * @param  numberMonths is the number of months you want to move forward
      */
-    public void simulate(int numberMonths )
+    public void simulate( int numberMonths )
     {
         for(int i = 0; i < numberMonths; i++)
         {

@@ -4,6 +4,8 @@ public class Coordonates {
     private final int x_axes;
     private final int y_axes;
 
+    //TODO : implement a space limit notion and move function
+
     /*--------------------------- getters ----------------------------------------- */  
 
     /**

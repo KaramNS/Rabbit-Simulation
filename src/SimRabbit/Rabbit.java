@@ -3,7 +3,8 @@ package SimRabbit;
 import java.util.ArrayList;
 import java.util.Random; 
 
-enum Sex {
+enum Sex 
+{
     MALE,
     FEMALE;
 }
@@ -51,8 +52,6 @@ public class Rabbit
         this.sex =  random.nextInt(2) == 0 ? Sex.MALE : Sex.FEMALE ;
         this.hashID = this.hashCode() ;
     }
-    
-
 
     /**
      * @description redifine hashCode to have an identifier for all rabbits
