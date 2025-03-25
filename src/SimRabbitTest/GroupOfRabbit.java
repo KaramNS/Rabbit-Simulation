@@ -20,7 +20,7 @@ public class GroupOfRabbit {
      * 
      * @return Return the size of the less sized list of rabbit (males / females)
      */
-    public int wichMorePopulation(){
+    public int whichMorePopulation(){
 
         return( this.males.size() < this.females.size()? this.males.size():this.females.size());
         
@@ -50,7 +50,7 @@ public class GroupOfRabbit {
      * need to know how many litter a female did a litter
      */
     public void reproduction(Rabbit rabbit){
-        int size = wichMorePopulation();
+        int size = whichMorePopulation();
       
 
         for (int i = 0 ; i < size ; i++){
