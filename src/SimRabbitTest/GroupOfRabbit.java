@@ -1,18 +1,19 @@
 package SimRabbitTest;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Stack;
 
 public class GroupOfRabbit {
     
-    LinkedList<Rabbit> males;
-    LinkedList<Rabbit> females;
+    ArrayList<Rabbit> males;
+    ArrayList<Rabbit> females;
     Generator generator;
     int numbersDead;
 
 
     GroupOfRabbit(){
-        this.males = new LinkedList<Rabbit>();
-        this.females = new LinkedList<Rabbit>();
+        this.males = new ArrayList<Rabbit>();
+        this.females = new ArrayList<Rabbit>();
         this.generator = new Generator();
         this.numbersDead =0;
 
@@ -74,19 +75,29 @@ public class GroupOfRabbit {
      * @description removeDead remove all deads Rabbits from lists
      */
     public void removeDead(){
+
+        Stack stack = new Stack<Rabbit>();
         for(Rabbit e : this.males){
             if(e.getAge() == -1){
-                this.males.remove(e);
+                stack.add(e);
                 this.numbersDead +=1;
             }
         }
-        
+
+        for(Rabbit h : stack){
+            this.males.remove(h);
+        }
+
         for(Rabbit f : this.females){
             if(f.getAge() == -1){
-                this.females.remove(f);
+                stack.add(f);
                 this.numbersDead +=1;
 
             }
+        }
+
+        for(Rabbit g : stack){
+            this.females.remove(g);
         }
 
 
