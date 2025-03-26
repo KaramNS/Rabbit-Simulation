@@ -146,9 +146,9 @@ public class GroupOfRabbit {
 
                     femaleAlone.increaseNbOfLitter(); 
                     int nbOfKids = (generator.getRandom()%4+3);
-                    for(int i; i < nbOfKids ; i++){
+                    for(int j=0; j < nbOfKids ; j++){
                         
-                        this.createBaby(generator);
+                        createBaby();
                     }
 
 
@@ -163,9 +163,9 @@ public class GroupOfRabbit {
                     femaleAlone.increaseNbOfLitter();
                     int nbOfKids =(generator.getRandom()%4 + 3);
 
-                    for(int i ; i < nbOfKids ; i++){
+                    for(int k =0 ; k < nbOfKids ; k++){
 
-                        this.createBaby();
+                        createBaby();
                     }
                 }
 

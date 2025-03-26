@@ -21,7 +21,7 @@ public class Time {
      * move forward the time by 1 month
      */
     public void moveForward(){
-        this.time +=1;
+        this.month +=1;
 
     }
 
