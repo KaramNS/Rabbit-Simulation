@@ -13,14 +13,20 @@ public class Time {
     }
 
 
-    public getYear(){
+    public int getYear(){
         return this.month/12;
     }
 
-    public timeMoveForward(){
+    /**
+     * move forward the time by 1 month
+     */
+    public void moveForward(){
         this.time +=1;
 
     }
 
+    public void reset(){
+        this.month = 0;
+    }
     
 }

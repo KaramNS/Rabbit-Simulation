@@ -7,12 +7,14 @@ public class GroupOfRabbit {
     LinkedList<Rabbit> males;
     LinkedList<Rabbit> females;
     Generator generator;
+    int numbersDead;
 
 
     GroupOfRabbit(){
         this.males = new LinkedList<Rabbit>();
         this.females = new LinkedList<Rabbit>();
         this.generator = new Generator();
+        this.numbersDead =0;
 
         for(int i = 0 ; i < 5 ; i++){
             this.females.add(new Rabbit());
@@ -22,6 +24,40 @@ public class GroupOfRabbit {
     }
 
     
+
+
+
+
+
+
+
+    /**
+     * Use to gat numbers of rabbits alive
+     * @return the number (int) of rabbit alive
+     */
+    public int getNumberAlive(){
+        removeDead();
+        return(this.females.size() + this.males.size());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -35,18 +71,21 @@ public class GroupOfRabbit {
     }
 
     /**
-     * @description removeDead remove all dead Rabbits from lists
+     * @description removeDead remove all deads Rabbits from lists
      */
     public void removeDead(){
         for(Rabbit e : this.males){
             if(e.getAge() == -1){
                 this.males.remove(e);
+                this.numbersDead +=1;
             }
         }
         
         for(Rabbit f : this.females){
             if(f.getAge() == -1){
                 this.females.remove(f);
+                this.numbersDead +=1;
+
             }
         }
 
@@ -55,9 +94,8 @@ public class GroupOfRabbit {
 
     /**
      * using a generator, create a baby rabbit and check if it s a female/male and add it in the better list
-     * @param generator a instance of a Generator object
      */
-    public void createBaby(Generator generator){
+    public void createBaby(){
         //creation of a baby
         Rabbit kid = new Rabbit();
 
@@ -74,9 +112,9 @@ public class GroupOfRabbit {
     /**
      * For each couple of rabbits, we check if they have babies, and if it is ok, we generate 3 to 6 babies and 
      * keep in memory the number of litters the female did
-     * @param generator an instance of the Generator object
+     * 
      */
-    public void reproduction(Generator generator){
+    public void reproduction(){
         int size = whichMorePopulation();
         Rabbit femaleAlone;
 
@@ -137,16 +175,35 @@ public class GroupOfRabbit {
         }
     }
 
+    /**
+     * Check if all rabbits are dying or not and set their parameters to be trated
+     */
+    public void checkIsDying(){
+        for(Rabbit r : this.females){
+            this.generator.setMortalityAndAge(r);
+            r = this.generator.isDying(r);
+            
+        }
 
 
-
-
-
-
-
-
-
-    public static void main(String[] args) {
-        
+        for(Rabbit r : this.males){
+            this.generator.setMortalityAndAge(r);
+            r = this.generator.isDying(r);
+            
+        }
     }
+
+
+    
+    @Override
+    public String toString() {
+        String s = String.format("Number alive : %d \n Numbers dead since the starts :",this.getNumberAlive(),this.numbersDead);
+        
+        return s;
+    }
+
+
+
+
+
 }
