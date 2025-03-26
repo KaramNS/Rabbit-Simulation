@@ -1,122 +1,122 @@
 package SimRabbitTest;
 
-import java.util.Random;
-
 public class Rabbit {
-
-    private int age = 0;
-    private Random random ;
-    private double mortality ;
     
-/**
- * the constructor for rabbits
- * @important the mortality is a float, if you set it be careful to 0 <= mortality <= 1
- */
-    public Rabbit(){
-        this.age = 0;
-        this.random = new Random();
-        this.mortality =0.3; // /!\ it is a percentage
+    private int age;
+    private int maturity;
+    private int nbOfLitter;
+
+    public Rabbit(int a,int matur){
+        this.age = a;
+        this.maturity = matur;
     }
-    
+
+
+    public Rabbit(){
+        this.age =0;
+        this.maturity = 0 ;
+        this.nbOfLitter = 0;
+    }
 
 
 
 
+/*----------------------- Getters / Setters ----------------------------*/
 
 
+    /**
+     * get the number of litters a female rabbit did in 1 year (starting from the first litter)
+     * @return nbOfLitter is the number of Litter a female rabbit did in 1 year
+     */
+    public int getNbOfLitter() {
+        return nbOfLitter;
+    }
 
-/*-------------------------Getters / Setters ----------------------------- */
+
+    /**
+     * method to set the number of litters a rabbit did
+     * @param nbOfLitter is a int need to set the nbOfLitter
+     */
+    public void setNbOfLitter(int nbOfLitter) {
+        this.nbOfLitter = nbOfLitter;
+    }
 
 
+    /**
+     * increase the number of litter a rabbit females did
+     */
+    public void increaseNbOfLitter(){
+        this.nbOfLitter += 1;
+    }
 
     /**
      * set the age of the rabbit
-     * @param age is an integer, represents his age in month , don't be too greedy and don't set it over than 15 years (180 months)
+     * @param age is the age you want to set
      */
     public void setAge(int age) {
         this.age = age;
-        
     }
-
-
-
-
 
     /**
-     * Set the mortality of a rabbit
-     * @param mortality is a float for a percent
-     * @important if you set it be careful to 0 <= mortality <= 1
+     * Set the maturity
+     * @param maturity is 0 if non mature else 1
      */
-    public void setMortality(double mortality) {
-        this.mortality = mortality;
+    public void setMaturity(int maturity) {
+        this.maturity = maturity;
     }
-
-
-
-
- 
-    public int getRandom() {
-        return random.nextInt(100);
-    }
-
-
-
-
-    /*--------------------------------- Methods ---------------------------------- */
 
     /**
-     * Check if the rabbit dies, if he dies return the maturity with special argument to be trated in GroupOfRabbit
-     * @param maturity take an instance of maturity
-     * @return return the maturity
+     * 
+     * @return age is the age of the rabbit
      */
-    public Maturity isDying(Maturity maturity){
-
-
-        this.setAge(maturity.getAge());
-        if (random.nextInt(100) <= mortality*100){
-            maturity.setAge(-1);
-        }
-
+    public int getAge() {
+        return age;
+    }
+    /**
+     * method used to know the maturity of a rabbit
+     * @return maturity =1 if mature else 0
+     */
+    public int getMaturity() {
         return maturity;
-
     }
 
+    
+
+
+    
 
 
 
 
 
 
+/*--------------------------- Methods -------------------------------------------- */
 
     /**
-     * @description check if the rabbit is mature, need a object maturity to change his status
-     * @param  maturity maturity is a Maturity object used to initiate the age of the rabbit object to generate change the maturity stats if needed
-     * @return maturity after beeing changed if needed
+     * use the random generator of the object rabbit to check if the rabbit is mature and
+     * if it is true, set the maturity to 1
+     * @param rabbit is an instance of rabbit
      */
-    public Maturity isMature(Maturity maturity){
-        setAge(maturity.getAge());
-        if (this.age == 8  ){
+    public void verrifyMaturity(Generator rabbit){
 
-            maturity.setMaturity(1);
+        if (this.age == 9  ){
+            this.maturity = 1;
+
 
         }
-        int p =0;//probabilité
-        if(this.age == 5 ||this.age == 7){
+        int p =0;
+        if(this.age == 5 ||this.age == 8){
             p = 25;
             
         }
-        if(this.age == 6 ||this.age == 6){
+        if(this.age == 6 ||this.age == 7){
             p = 50;
             
         }
 
 
-        if(this.getRandom() < p){
-            maturity.setMaturity(1);
-            
+        if(rabbit.getRandom() < p){
+            this.maturity = 1;
         }
-
-        return(maturity);
     }
-    
 }
