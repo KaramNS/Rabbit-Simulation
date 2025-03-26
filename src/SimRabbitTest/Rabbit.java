@@ -119,4 +119,10 @@ public class Rabbit {
             this.maturity = 1;
         }
     }
+
+
+
+    public boolean isFemale(Generator generator){
+        return(generator.getRandom()%2 == 1 );
+    }
 }
