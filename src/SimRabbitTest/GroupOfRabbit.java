@@ -97,9 +97,10 @@ public class GroupOfRabbit {
         }
 
         for(Rabbit g : stack){
+            
             this.females.remove(g);
         }
-
+ 
 
     }
 
