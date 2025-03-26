@@ -15,7 +15,7 @@ public class Generator {
     public Generator(){
         this.age = 0;
         this.random = new Random();
-        this.mortality =65; // /!\ it is a percentage
+        this.mortality =5.46; // /!\ it is a percentage
     }
     
 
@@ -65,7 +65,7 @@ public class Generator {
             this.mortality += 10;
         }
         else if(rabbit.getMaturity() == 1){
-            this.mortality = 40;
+            this.mortality = 4.56;
         }
     }
 
@@ -92,7 +92,7 @@ public class Generator {
 
         setMortalityAndAge(rabbit);
 
-        if (random.nextInt(100) <= mortality*100){
+        if (random.nextInt(100) <= mortality){
             rabbit.setAge(-1);
         }
 

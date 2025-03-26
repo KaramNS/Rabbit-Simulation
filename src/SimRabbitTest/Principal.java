@@ -12,16 +12,20 @@ public class Principal {
 
         while(time.getYear() != 20){
 
-            groupOfRabbit.checkIsDying();
+            groupOfRabbit.beOlders();
+            groupOfRabbit.checkIsDying(time);
             groupOfRabbit.removeDead();
             groupOfRabbit.reproduction();
+
+
             time.moveForward();
 
+            System.out.println(groupOfRabbit);
+            System.out.println(time);
 
 
         }
 
-        System.out.println(groupOfRabbit);
 
 
     }

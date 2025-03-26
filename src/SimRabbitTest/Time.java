@@ -29,4 +29,8 @@ public class Time {
         this.month = 0;
     }
     
+    @Override
+    public String toString() {
+        return String.format("Time passed :%d (%d years)", this.getMonth(), this.getYear());
+    };
 }

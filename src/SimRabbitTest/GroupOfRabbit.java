@@ -17,7 +17,7 @@ public class GroupOfRabbit {
         this.generator = new Generator();
         this.numbersDead =0;
 
-        for(int i = 0 ; i < 5 ; i++){
+        for(int i = 0 ; i < 10 ; i++){
             this.females.add(new Rabbit());
             this.males.add(new Rabbit());
         }
@@ -76,31 +76,8 @@ public class GroupOfRabbit {
      */
     public void removeDead(){
 
-        Stack stack = new Stack<Rabbit>();
-        for(Rabbit e : this.males){
-            if(e.getAge() == -1){
-                stack.add(e);
-                this.numbersDead +=1;
-            }
-        }
-
-        for(Rabbit h : stack){
-            this.males.remove(h);
-        }
-
-        for(Rabbit f : this.females){
-            if(f.getAge() == -1){
-                stack.add(f);
-                this.numbersDead +=1;
-
-            }
-        }
-
-        for(Rabbit g : stack){
-            
-            this.females.remove(g);
-        }
- 
+        this.numbersDead += this.males.removeIf(r -> r.getAge() == -1)? 1 : 0;
+        this.numbersDead += this.females.removeIf(r -> r.getAge() == -1)? 1 : 0;
 
     }
 
@@ -131,58 +108,60 @@ public class GroupOfRabbit {
         Rabbit femaleAlone;
 
         for (int i = 0 ; i < size ; i++){
-     
             femaleAlone = this.females.get(i);
 
-            if(femaleAlone.getNbOfLitter() < 3){
-
-
-                femaleAlone.increaseNbOfLitter(); 
-                Rabbit kid = new Rabbit();
-
-
-                if(generator.getRandom() % 2 == 0){
-                    this.females.add(kid);
-                }
-                else {
-                    this.males.add(kid);
-                }
-
-
-
-            }
-
-            //if 4< numbers of litter < 8 then more chance to have babies
-            if(femaleAlone.getNbOfLitter()<=7 && femaleAlone.getNbOfLitter() >= 5){
-                if(generator.getRandom() < 50){
-
+            if(femaleAlone.getAge() <= 10*12){
+                if(femaleAlone.getNbOfLitter() < 3){
+    
+    
                     femaleAlone.increaseNbOfLitter(); 
-                    int nbOfKids = (generator.getRandom()%4+3);
-                    for(int j=0; j < nbOfKids ; j++){
-                        
-                        createBaby();
+                    Rabbit kid = new Rabbit();
+    
+    
+                    if(generator.getRandom() % 2 == 0){
+                        this.females.add(kid);
                     }
-
-
+                    else {
+                        this.males.add(kid);
+                    }
+    
+    
     
                 }
-
-            }
-
-            if(femaleAlone.getNbOfLitter() ==8 || femaleAlone.getNbOfLitter() == 9){
-
-                if(generator.getRandom() < 15){
-                    femaleAlone.increaseNbOfLitter();
-                    int nbOfKids =(generator.getRandom()%4 + 3);
-
-                    for(int k =0 ; k < nbOfKids ; k++){
-
-                        createBaby();
+    
+                //if 4< numbers of litter < 8 then more chance to have babies
+                if(femaleAlone.getNbOfLitter()<=7 && femaleAlone.getNbOfLitter() >= 5){
+                    if(generator.getRandom() < 50){
+    
+                        femaleAlone.increaseNbOfLitter(); 
+                        int nbOfKids = (generator.getRandom()%4+3);
+                        for(int j=0; j < nbOfKids ; j++){
+                            
+                            createBaby();
+                        }
+    
+    
+        
                     }
+    
                 }
-
-
+    
+                if(femaleAlone.getNbOfLitter() ==8 || femaleAlone.getNbOfLitter() == 9){
+    
+                    if(generator.getRandom() < 15){
+                        femaleAlone.increaseNbOfLitter();
+                        int nbOfKids =(generator.getRandom()%4 + 3);
+    
+                        for(int k =0 ; k < nbOfKids ; k++){
+    
+                            createBaby();
+                        }
+                    }
+    
+    
+                }
             }
+
 
         }
     }
@@ -190,26 +169,46 @@ public class GroupOfRabbit {
     /**
      * Check if all rabbits are dying or not and set their parameters to be trated
      */
-    public void checkIsDying(){
-        for(Rabbit r : this.females){
-            this.generator.setMortalityAndAge(r);
+    public void checkIsDying(Time time){
+
+
+
+
+        for (int i = 0; i < this.males.size(); i++) {
+            Rabbit r = this.males.get(i);
             r = this.generator.isDying(r);
-            
+            this.males.set(i, r);         
+        }
+    
+        for (int i = 0; i < this.females.size(); i++) {
+            Rabbit r = this.females.get(i);
+            r = this.generator.isDying(r);
+            this.females.set(i, r); 
         }
 
+    }
+        
 
+
+
+    
+
+    public void beOlders(){
+        for(Rabbit r : this.females){
+            r.beOlder();
+            r.verrifyMaturity(this.generator);
+        }
         for(Rabbit r : this.males){
-            this.generator.setMortalityAndAge(r);
-            r = this.generator.isDying(r);
-            
+            r.beOlder();
+            r.verrifyMaturity(this.generator);
+
         }
     }
-
 
     
     @Override
     public String toString() {
-        String s = String.format("Number alive : %d \n Numbers dead since the starts :",this.getNumberAlive(),this.numbersDead);
+        String s = String.format("Number alive : %d \n Numbers dead since the starts : %d",this.getNumberAlive(),this.numbersDead);
         
         return s;
     }

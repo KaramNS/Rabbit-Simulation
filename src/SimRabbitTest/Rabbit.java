@@ -57,6 +57,9 @@ public class Rabbit {
         this.age = age;
     }
 
+    public void beOlder(){
+        this.age += 1;
+    }
     /**
      * Set the maturity
      * @param maturity is 0 if non mature else 1
