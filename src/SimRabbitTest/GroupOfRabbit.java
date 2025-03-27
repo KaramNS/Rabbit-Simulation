@@ -3,21 +3,47 @@ package SimRabbitTest;
 import java.util.ArrayList;
 import java.util.Stack;
 
+
+
+
+
+
+
+/**
+ * 
+ * @author Largeron Jean-Baptiste and Elnasory Karam
+ * 
+ * @description 
+ * This class manages male and female rabbits, handles their aging, reproduction,
+ * and mortality processes, and keeps track of population statistics.
+ */
+
 public class GroupOfRabbit {
     
     ArrayList<Rabbit> males;
     ArrayList<Rabbit> females;
     Generator generator;
     int numbersDead;
+    int maxBabiesPerMonth; // we limit the max population created by month because the VM use to much fast memory and processor power to be completed naturally
 
 
+
+
+
+
+
+
+    /*-------------------------- Constructors ------------------------ */
     GroupOfRabbit(){
         this.males = new ArrayList<Rabbit>();
         this.females = new ArrayList<Rabbit>();
         this.generator = new Generator();
         this.numbersDead =0;
+        this.maxBabiesPerMonth = 1000000;
 
-        for(int i = 0 ; i < 10 ; i++){
+
+
+        for(int i = 0 ; i < 2 ; i++){
             this.females.add(new Rabbit());
             this.males.add(new Rabbit());
         }
@@ -29,6 +55,7 @@ public class GroupOfRabbit {
 
 
 
+    /*-------------------------- Getters/ Setters ------------------------ */
 
 
 
@@ -39,6 +66,14 @@ public class GroupOfRabbit {
     public int getNumberAlive(){
         removeDead();
         return(this.females.size() + this.males.size());
+    
+    
+    }
+
+
+
+    public int getNumbersDead() {
+        return numbersDead;
     }
 
 
@@ -58,6 +93,9 @@ public class GroupOfRabbit {
 
 
 
+
+
+    /*-------------------------------- Methods ------------------------------------- */
 
 
 
@@ -71,15 +109,32 @@ public class GroupOfRabbit {
         
     }
 
+
+
+
+
+
+   
     /**
      * @description removeDead remove all deads Rabbits from lists
      */
     public void removeDead(){
 
-        this.numbersDead += this.males.removeIf(r -> r.getAge() == -1)? 1 : 0;
-        this.numbersDead += this.females.removeIf(r -> r.getAge() == -1)? 1 : 0;
+        int before = this.males.size();
+        this.males.removeIf(r -> r.getAge() == -1);
+        this.numbersDead += (before - this.males.size());
+        
 
+
+        before = this.females.size();
+        this.females.removeIf(r -> r.getAge() == -1);
+        this.numbersDead += (before - this.females.size());
     }
+
+
+
+
+
 
     /**
      * using a generator, create a baby rabbit and check if it s a female/male and add it in the better list
@@ -98,46 +153,58 @@ public class GroupOfRabbit {
     }
     
 
+    public void reset(){
+        this.numbersDead = 0;
+        this.females.clear();   
+        this.males.clear();
+    }
+
+
+
+
+
     /**
+     * @description
      * For each couple of rabbits, we check if they have babies, and if it is ok, we generate 3 to 6 babies and 
      * keep in memory the number of litters the female did
+     * It's the main function of this class
      * 
      */
     public void reproduction(){
+        
         int size = whichMorePopulation();
         Rabbit femaleAlone;
+        int babieMade = 0;
 
         for (int i = 0 ; i < size ; i++){
             femaleAlone = this.females.get(i);
 
             if(femaleAlone.getAge() <= 10*12){
                 if(femaleAlone.getNbOfLitter() < 3){
-    
-    
-                    femaleAlone.increaseNbOfLitter(); 
-                    Rabbit kid = new Rabbit();
-    
-    
-                    if(generator.getRandom() % 2 == 0){
-                        this.females.add(kid);
-                    }
-                    else {
-                        this.males.add(kid);
-                    }
-    
-    
+                    femaleAlone.increaseNbOfLitter();
+                    
+                    
+                    int nbOfKids = (generator.getRandom()%4+3);
+                        for(int j=0; j < nbOfKids && babieMade < this.maxBabiesPerMonth ; j++){
+                            
+                            createBaby();
+                            babieMade ++;
+                        }
     
                 }
     
                 //if 4< numbers of litter < 8 then more chance to have babies
                 if(femaleAlone.getNbOfLitter()<=7 && femaleAlone.getNbOfLitter() >= 5){
-                    if(generator.getRandom() < 50){
+                    if(generator.getRandom() < 35){
     
                         femaleAlone.increaseNbOfLitter(); 
+
                         int nbOfKids = (generator.getRandom()%4+3);
-                        for(int j=0; j < nbOfKids ; j++){
+                        for(int j=0; j < nbOfKids && babieMade < this.maxBabiesPerMonth; j++){
                             
                             createBaby();
+                            babieMade ++;
+
                         }
     
     
@@ -148,13 +215,16 @@ public class GroupOfRabbit {
     
                 if(femaleAlone.getNbOfLitter() ==8 || femaleAlone.getNbOfLitter() == 9){
     
-                    if(generator.getRandom() < 15){
+                    if(generator.getRandom() < 5){
                         femaleAlone.increaseNbOfLitter();
                         int nbOfKids =(generator.getRandom()%4 + 3);
     
-                        for(int k =0 ; k < nbOfKids ; k++){
-    
+                        for(int k =0 ; k < nbOfKids && babieMade < this.maxBabiesPerMonth ; k++){
+                            
                             createBaby();
+                            babieMade ++;
+
+
                         }
                     }
     
@@ -166,7 +236,14 @@ public class GroupOfRabbit {
         }
     }
 
+
+
+
+
+
+
     /**
+     * @description
      * Check if all rabbits are dying or not and set their parameters to be trated
      */
     public void checkIsDying(Time time){
@@ -192,7 +269,10 @@ public class GroupOfRabbit {
 
 
     
-
+    /**
+     * @description
+     * making grow older rabbits of the lists
+     */
     public void beOlders(){
         for(Rabbit r : this.females){
             r.beOlder();
@@ -206,6 +286,9 @@ public class GroupOfRabbit {
     }
 
     
+
+
+
     @Override
     public String toString() {
         String s = String.format("Number alive : %d \n Numbers dead since the starts : %d",this.getNumberAlive(),this.numbersDead);

@@ -1,20 +1,29 @@
 package SimRabbitTest;
 
-import java.util.Random;
 
+
+
+
+/**
+ * @description 
+ * This class is a generator for rabbits. (Final version implements Mersenne Twistter Random generator written by David Beaumont a French developper, 
+ * you can find his git here : https://github.com/hagbard 
+ * or in this link : https://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/VERSIONS/JAVA/java.html )
+ */
 public class Generator {
 
     private int age = 0;
-    private Random random ;
+    private MTRandom random ;
     private double mortality ;
     
 /**
+ * @description
  * the constructor for rabbits
- * @important the mortality is a float, if you set it be careful to 0 <= mortality <= 1
+ * @important the mortality is a float but it is a percentage, if you set it be careful to 0 <= mortality <= 100
  */
     public Generator(){
         this.age = 0;
-        this.random = new Random();
+        this.random = new MTRandom(true);
         this.mortality =5.46; // /!\ it is a percentage
     }
     
@@ -30,6 +39,7 @@ public class Generator {
 
 
     /**
+     * @description
      * set the age of the rabbit
      * @param age is an integer, represents his age in month , don't be too greedy and don't set it over than 15 years (180 months)
      */
@@ -44,6 +54,7 @@ public class Generator {
 
 
     /**
+     * @description
      * Set the mortality of a rabbit
      * @param mortality is a float for a percent
      * @important if you set it be careful to 0 <= mortality <= 1
@@ -54,14 +65,22 @@ public class Generator {
 
 
 
+
+
+
+
     /**
+     * @description
      * Use a rabbit instance to set the mortality
      * @param rabbit is an instance of rabbit object
      */
 
     public void setMortalityAndAge(Rabbit rabbit){
         setAge(rabbit.getAge());
-        if(this.age >=10){
+        if(this.age == 15){
+            this.age = -1;
+        }
+        if(this.age >=10*12){
             this.mortality += 10;
         }
         else if(rabbit.getMaturity() == 1){
@@ -70,7 +89,12 @@ public class Generator {
     }
 
 
+
+
+
+
     /**
+     * @description
      * Used to get an random number in [0;100]
      * @return an integer in [0;100]
      */
@@ -84,6 +108,7 @@ public class Generator {
     /*--------------------------------- Methods ---------------------------------- */
 
     /**
+     * @description
      * Check if the rabbit dies, if he dies return the rabbit with special argument to be trated in GroupOfRabbit
      * @param rabbit take an instance of rabbit
      * @return return the rabbit
