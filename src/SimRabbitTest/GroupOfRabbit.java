@@ -103,7 +103,7 @@ public class GroupOfRabbit {
      * 
      * @return Return the size of the less sized list of rabbit (males / females)
      */
-    public int whichMorePopulation(){
+    private int whichMorePopulation(){
 
         return( this.males.size() < this.females.size()? this.males.size():this.females.size());
         
@@ -139,7 +139,7 @@ public class GroupOfRabbit {
     /**
      * using a generator, create a baby rabbit and check if it s a female/male and add it in the better list
      */
-    public void createBaby(){
+    private void createBaby(){
         //creation of a baby
         Rabbit kid = new Rabbit();
 

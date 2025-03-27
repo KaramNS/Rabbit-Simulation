@@ -25,6 +25,10 @@ public class Generator {
         this.age = 0;
         this.random = new MTRandom(true);
         this.mortality =5.46; // /!\ it is a percentage
+        //Mortality(year) = 65%
+        //Survival(year) = 35%
+        //Survival(month) = 0.35 ^ (1/12) --> equivalent of 0.9454
+        //Mortality(month) = 1- Survival(month) --->equivalent of 0.0546 = 5.46%
     }
     
 
@@ -84,7 +88,7 @@ public class Generator {
             this.mortality += 10;
         }
         else if(rabbit.getMaturity() == 1){
-            this.mortality = 4.56;
+            this.mortality = 4.56;//see attributes to know how i did this
         }
     }
 
@@ -132,7 +136,9 @@ public class Generator {
 
 
     /**
-     * @description check if the rabbit is mature, need a object rabbit to change his status
+     * @description check if the rabbit is mature, need a object rabbit to change his status here we force the Gaussian to be sure 
+     * it s what was required by the guidelines
+     * 
      * @param  rabbit rabbit is a Rabbit object used to initiate the age of the rabbit object to generate change the rabbit stats if needed
      * @return rabbit after beeing changed if needed
      */

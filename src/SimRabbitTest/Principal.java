@@ -9,7 +9,7 @@ public class Principal {
 
 
     public static final int SIMULATION_COUNT = 40;
-    public static final int TIME_OF_A_SIM = 1;
+    public static final int TIME_OF_A_SIM = 20;
 
     /**
      * 
